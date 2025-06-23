@@ -1,5 +1,6 @@
 package src;
 import java.util.List;
+import java.util.Scanner;
 
 public interface IMangaRepository {
     void save();
@@ -7,6 +8,6 @@ public interface IMangaRepository {
     Manga readByISBN(String isbn);
     List<Manga> readByTitle(String title);
     boolean update(Manga updatedManga);
-    boolean delete(String isbn);
+    boolean delete(String isbn, Scanner scanner);
     void listAll();
 }

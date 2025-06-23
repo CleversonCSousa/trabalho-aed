@@ -1,11 +1,13 @@
 package src;
-import java.util.*;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         IMangaRepository mangaRepository = new MangaRepository();
         
         Scanner sc = new Scanner(System.in);
+
         while (true) {
             System.out.println("Escolha opção:");
             System.out.println("1 - Criar mangá");
@@ -20,7 +22,7 @@ public class Main {
             try {
                 switch (op) {
                     case "1":
-                        CreateMangaFromScanner cmfs = new CreateMangaFromScanner();
+                        CreateMangaFromScanner cmfs = new CreateMangaFromScanner(sc); 
                         Manga mangaCreated = cmfs.execute();
                         mangaRepository.create(mangaCreated);
                         break;
@@ -48,7 +50,7 @@ public class Main {
                         if (oldManga == null) {
                             System.out.println("Mangá não encontrado.");
                         } else {
-                            CreateMangaFromScanner createMangaFromScanner = new CreateMangaFromScanner();
+                            CreateMangaFromScanner createMangaFromScanner = new CreateMangaFromScanner(sc); 
                             Manga newManga = createMangaFromScanner.execute();
                             mangaRepository.update(newManga);
                         }
@@ -56,7 +58,7 @@ public class Main {
                     case "6":
                         System.out.print("Digite ISBN para apagar: ");
                         String isbnDel = sc.nextLine();
-                        mangaRepository.delete(isbnDel);
+                        mangaRepository.delete(isbnDel, sc); 
                         break;
                     case "0":
                         System.out.println("Saindo...");
@@ -70,5 +72,4 @@ public class Main {
             }
         }
     }
-
 }

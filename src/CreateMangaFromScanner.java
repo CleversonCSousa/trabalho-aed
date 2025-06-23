@@ -6,25 +6,27 @@ import java.util.Scanner;
 
 public class CreateMangaFromScanner {
 
+    private Scanner scanner;
+
+    public CreateMangaFromScanner(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
     public Manga execute() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("\n--- Criar Novo Mangá ---");
-
         System.out.print("ISBN: ");
         String isbn = scanner.nextLine();
 
         System.out.print("Título: ");
         String title = scanner.nextLine();
 
-        System.out.print("Autores (separados por vírgula): ");
+        System.out.print("Autor(es) (separados por vírgula): ");
         List<String> authors = Arrays.asList(scanner.nextLine().split(",\\s*"));
 
-        System.out.print("Ano de Início (digite '-' se não souber): ");
-        int startYear = parseYearInput(scanner.nextLine());
+        System.out.print("Ano de Início (-1 para desconhecido): ");
+        int startYear = Integer.parseInt(scanner.nextLine());
 
-        System.out.print("Ano de Fim (digite '-' se não souber): ");
-        int endYear = parseYearInput(scanner.nextLine());
+        System.out.print("Ano de Fim (-1 para desconhecido): ");
+        int endYear = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Gêneros (separados por vírgula): ");
         List<String> genres = Arrays.asList(scanner.nextLine().split(",\\s*"));
@@ -36,56 +38,25 @@ public class CreateMangaFromScanner {
         String publisher = scanner.nextLine();
 
         System.out.print("Ano da Edição: ");
-        int editionYear = readIntInput(scanner);
+        int editionYear = Integer.parseInt(scanner.nextLine());
 
         System.out.print("Total de Volumes: ");
-        int totalVolumes = readIntInput(scanner);
+        int totalVolumes = Integer.parseInt(scanner.nextLine());
 
-        System.out.print("Volumes Adquiridos (números separados por vírgula, ex: 1,2,5): ");
-        List<Integer> acquiredVolumeNumbers = parseAcquiredVolumes(scanner.nextLine());
-        int acquiredVolumesCount = acquiredVolumeNumbers.size();
-
-        return new Manga(isbn, title, authors, startYear, endYear, genres,
-                         magazine, publisher, editionYear, totalVolumes,
-                         acquiredVolumesCount, acquiredVolumeNumbers);
-    }
-
-    private static int parseYearInput(String input) {
-        if (input.equals("-")) {
-            return -1;
-        }
-        try {
-            return Integer.parseInt(input);
-        } catch (NumberFormatException e) {
-            System.out.println("Formato de ano inválido. Usando -1.");
-            return -1;
-        }
-    }
-
-    private static int readIntInput(Scanner scanner) {
-        while (!scanner.hasNextInt()) {
-            System.out.println("Entrada inválida. Por favor, digite um número inteiro.");
-            scanner.next();
-            System.out.print("Digite novamente: ");
-        }
-        int value = scanner.nextInt();
-        scanner.nextLine();
-        return value;
-    }
-
-    private static List<Integer> parseAcquiredVolumes(String input) {
-        List<Integer> volumes = new ArrayList<>();
-        if (input.trim().isEmpty()) {
-            return volumes;
-        }
-        String[] parts = input.split(",\\s*");
-        for (String part : parts) {
-            try {
-                volumes.add(Integer.parseInt(part.trim()));
-            } catch (NumberFormatException e) {
-                System.out.println("Ignorando volume inválido: " + part);
+        System.out.print("Volumes Adquiridos (números separados por vírgula, ex: 1,3,5): ");
+        String acquiredVolumesInput = scanner.nextLine();
+        List<Integer> acquiredVolumeNumbers = new ArrayList<>();
+        if (!acquiredVolumesInput.trim().isEmpty()) {
+            for (String s : acquiredVolumesInput.split(",\\s*")) {
+                acquiredVolumeNumbers.add(Integer.parseInt(s.trim()));
             }
         }
-        return volumes;
+        int acquiredVolumesCount = acquiredVolumeNumbers.size();
+
+        return new Manga(
+            isbn, title, authors, startYear, endYear, genres,
+            magazine, publisher, editionYear, totalVolumes,
+            acquiredVolumesCount, acquiredVolumeNumbers
+        );
     }
 }

@@ -6,9 +6,9 @@ public class MangaRepository implements IMangaRepository {
     private Map<String, Manga> mangas = new HashMap<>();
     private Map<String, List<String>> indexTitleToIsbn = new HashMap<>();
 
-    private final String mangasFileTxt = "../database/mangas.txt";
-    private final String indexPrimaryFile = "../database/index_primary.txt";
-    private final String indexSecondaryFile = "../database/index_secondary.txt";
+    private final String mangasFileTxt = "./database/mangas.txt";
+    private final String indexPrimaryFile = "./database/index_primary.txt";
+    private final String indexSecondaryFile = "./database/index_secondary.txt";
 
     public MangaRepository() {
         loadFromTxt();
@@ -173,18 +173,16 @@ public class MangaRepository implements IMangaRepository {
         return true;
     }
 
-    public boolean delete(String isbn) {
+    public boolean delete(String isbn, Scanner scanner) {
         if (!mangas.containsKey(isbn)) {
             System.out.println("Mangá não encontrado.");
             return false;
         }
 
         System.out.println("Confirma exclusão do mangá de ISBN " + isbn + "? (S/N)");
-        Scanner scanner = new Scanner(System.in);
         String resp = scanner.nextLine().trim().toUpperCase();
         if (!resp.equals("S")) {
             System.out.println("Exclusão cancelada.");
-            scanner.close();
             return false;
         }
 
@@ -199,7 +197,6 @@ public class MangaRepository implements IMangaRepository {
         }
 
         save();
-        scanner.close();
         return true;
     }
 
