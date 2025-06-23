@@ -11,5 +11,5 @@ Compilar:
 Executar:
 
 ```bash
-    java -cp bin src
+    java -cp bin src/Main.java
 ```

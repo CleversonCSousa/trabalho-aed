@@ -108,7 +108,7 @@ public class MangaRepository implements IMangaRepository {
                                             acquiredVolumesCount, acquiredVolumes);
 
                     mangas.put(isbn, manga);
-                    indexTitleToIsbn.computeIfAbsent(title, _ -> new ArrayList<>()).add(isbn);
+                    indexTitleToIsbn.computeIfAbsent(title, key -> new ArrayList<>()).add(isbn);
 
                 } catch (Exception e) {
                     System.err.println("Erro ao processar linha " + lineNumber + ": " + e.getMessage());
@@ -128,7 +128,7 @@ public class MangaRepository implements IMangaRepository {
             return false;
         }
         mangas.put(manga.getIsbn(), manga);
-        indexTitleToIsbn.computeIfAbsent(manga.getTitle(), _ -> new ArrayList<>()).add(manga.getIsbn());
+        indexTitleToIsbn.computeIfAbsent(manga.getTitle(), key -> new ArrayList<>()).add(manga.getIsbn());
         save();
         return true;
     }
@@ -165,7 +165,7 @@ public class MangaRepository implements IMangaRepository {
                     indexTitleToIsbn.remove(oldManga.getTitle());
                 }
             }
-            indexTitleToIsbn.computeIfAbsent(updatedManga.getTitle(), _ -> new ArrayList<>()).add(updatedManga.getIsbn());
+            indexTitleToIsbn.computeIfAbsent(updatedManga.getTitle(), key -> new ArrayList<>()).add(updatedManga.getIsbn());
         }
 
         mangas.put(updatedManga.getIsbn(), updatedManga);
